@@ -1,5 +1,6 @@
 import random
 
+
 class Ship(object):
     def __init__(self, start, end):
         super(Ship, self).__init__()
@@ -21,7 +22,8 @@ class Ship(object):
     def random(size, n):
         start = [random.randint(0, size - 1), random.randint(0, size - 1)]
         if random.random() > .5:
-            return Ship(start, [start[0], start[1] + n - 1] if start[1] + n - 1 < size else [start[0], start[1] - n + 1])
+            return Ship(start,
+                        [start[0], start[1] + n - 1] if start[1] + n - 1 < size else [start[0], start[1] - n + 1])
         else:
-            return Ship(start, [start[0] + n - 1, start[1]] if start[0] + n - 1 < size else [start[0] - n + 1, start[1]])
-
+            return Ship(start,
+                        [start[0] + n - 1, start[1]] if start[0] + n - 1 < size else [start[0] - n + 1, start[1]])

@@ -1,7 +1,7 @@
 import abc, sys
-from enum import IntEnum
 from battleship.grid import Grid, Outcome
 from battleship.ship import Ship
+
 
 class Player(abc.ABC):
 
@@ -81,4 +81,3 @@ class Human(Player):
 
     def remaining(self) -> int:
         return self.ships
-

@@ -5,9 +5,9 @@ import numpy as np
 import random
 
 
-class Dummy(Player):
+class Learner(Player):
     def __init__(self, size):
-        super(Dummy, self).__init__()
+        super(Learner, self).__init__()
         self.size = size
         self.grid = Grid(size)
         self.mask = np.zeros((self.size, self.size))

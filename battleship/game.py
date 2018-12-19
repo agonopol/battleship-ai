@@ -1,5 +1,6 @@
 from battleship.grid import Outcome
-import sys, os
+import sys
+
 
 class Game(object):
     def __init__(self, player, opponent, ships=(5, 4, 3, 3, 2)):
@@ -11,7 +12,7 @@ class Game(object):
 
     def display(self):
         sys.stdout.write(''.join(['\t', '-' * 12, 'Player', '-' * 12, '\n']))
-        self.player.display( )
+        self.player.display()
         sys.stdout.write(''.join(['\t', '-' * 11, 'Opponent', '-' * 11, '\n']))
         self.opponent.display(hidden=True)
 
@@ -37,4 +38,4 @@ class Game(object):
         self._turn(self.opponent, self.player, "Bot")
 
     def over(self):
-        return not ( self.player.remaining( ) and self.opponent.remaining( ) )
+        return not (self.player.remaining() and self.opponent.remaining())
