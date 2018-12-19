@@ -3,6 +3,7 @@ from battleship.grid import Grid
 from battleship.ai.player import Player, Outcome
 import numpy as np
 import random
+import tensorflow
 
 
 class Learner(Player):

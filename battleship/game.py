@@ -1,5 +1,5 @@
 from battleship.grid import Outcome
-import sys
+import sys, os
 
 
 class Game(object):
@@ -16,7 +16,7 @@ class Game(object):
         sys.stdout.write(''.join(['\t', '-' * 11, 'Opponent', '-' * 11, '\n']))
         self.opponent.display(hidden=True)
 
-    def _turn(self, player, opponent, name):
+    def _turn(self, player, opponent, name, clear=False):
         result = Outcome.INVALID
         while result == Outcome.INVALID:
             (x, y) = player.target()
@@ -24,6 +24,8 @@ class Game(object):
             if result == Outcome.INVALID:
                 sys.stdout.write("Location %d,%d is not valid.\n" % (x, y))
             else:
+                if clear:
+                    os.system("clear")
                 sys.stdout.write("%s shot at %d,%d\n" % (name, x, y))
         if result == Outcome.HIT:
             sys.stdout.write("%s hit!\n" % name)
@@ -34,7 +36,7 @@ class Game(object):
             return
 
     def turn(self):
-        self._turn(self.player, self.opponent, "You")
+        self._turn(self.player, self.opponent, "You", clear=True)
         self._turn(self.opponent, self.player, "Bot")
 
     def over(self):
