@@ -12,7 +12,7 @@ The learner tries to predict from a given configuration of the NxN grid (hit/mis
 
 - ![alt text][logo]
 
-[logo]: https://github.com/agonopol/battleship-ai/rate.png "Performance"
+[logo]: https://github.com/agonopol/battleship-ai/raw/master/rate.png "Performance"
 
 
 ## Basic setup
