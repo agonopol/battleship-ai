@@ -7,7 +7,7 @@ A command line battleship game using reinforcement learning to train the game AI
 Module battleship.ai.learner contains the simple Proximal Policy Optimization learner over the space battleship grid space.
 The learner tries to predict from a given configuration of the NxN grid (hit/miss) where the next likely shot should be. 
 
-#####TODO'S
+##### TODO'S
  - The current model is not optimized, after 1000 iterations of training the average # of shots it takes to finish the game is decreasing but not monotonically, need more time to experiment with layers, and state space
 
 ![alt text][logo]
