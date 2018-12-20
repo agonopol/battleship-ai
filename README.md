@@ -10,7 +10,7 @@ The learner tries to predict from a given configuration of the NxN grid (hit/mis
 #####TODO'S
  - The current model is not optimized, after 1000 iterations of training the average # of shots it takes to finish the game is decreasing but not monotonically, need more time to experiment with layers, and state space
 
-- ![alt text][logo]
+![alt text][logo]
 
 [logo]: https://github.com/agonopol/battleship-ai/raw/master/rate.png "Performance"
 
