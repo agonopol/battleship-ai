@@ -3,6 +3,9 @@ from battleship.ai.player import Human
 from battleship.ai.dummy import Dummy
 from battleship.ai.learner import Learner
 import random, os, click
+from tqdm import tqdm
+import matplotlib.pyplot as plt
+import numpy as np
 import logging
 
 @click.group()
@@ -22,11 +25,17 @@ def train(rounds):
     handler.setLevel(logging.ERROR)
     logger.addHandler(handler)
 
-    for round in range(rounds):
-        print("Round %d" % round)
+    turns = []
+    for _ in tqdm(range(rounds)):
         game = Game(dummy, ai, logger)
+        turn = 0
         while not game.over():
             game.turn()
+            turn += 1
+        turns.append(turn)
+    mean = np.convolve(turns, np.ones((100,))/100, mode='valid')
+    plt.plot(list(range(99, rounds)), mean)
+    plt.savefig('rate.png')
     ai.save()
 
 @battleship.command()

@@ -4,10 +4,11 @@ import sys
 
 
 class Outcome(IntEnum):
-    INVALID = 0
+    INVALID = -1
     MISS = 1
     HIT = 2
     WIN = 3
+    LOST = 4
 
 
 class State(IntEnum):

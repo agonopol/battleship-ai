@@ -12,18 +12,21 @@ def to_model(size, path):
 
 def agent(size, path):
     path = os.path.dirname(to_model(size, path))
+    # Lets try out simple gradient descent agent for now, no reason to be fancy
     agent = PPOAgent(states=dict(type='float', shape=(size, size)),
-                     actions=dict(type='int', shape=(2,), num_actions=size),
+                     actions=dict(
+                         x=dict(type='int', num_actions=size),
+                         y=dict(type='int', num_actions=size),
+                        ),
+                     #Simple 2 layer network, first flatten matrix then train on 2 layers, need time to experiment with more complex
                      network=[
                          dict(type='flatten'),
                          dict(type='dense', size=64),
-                         dict(type='dense', size=64)
+                         dict(type='dense', size=64),
                      ],
-                     batching_capacity=1000,
-                     step_optimizer=dict(
-                         type='adam',
-                         learning_rate=1e-4
-                     ))
+                     batching_capacity=100,
+                     discount=.75
+                     )
     if os.path.exists(path):
         print("Loading previous model ... ")
         agent.restore_model(path)
@@ -57,7 +60,7 @@ class Learner(Player):
 
     def target(self) -> (int, int):
         action = self.agent.act(self.mask)
-        return action[0], action[1]
+        return action['x'], action['y']
 
     def report(self, x: int, y: int) -> Outcome:
         result = self.grid.hit(x, y)
@@ -71,16 +74,19 @@ class Learner(Player):
     def mark(self, x: int, y: int, result: Outcome):
         if result == Outcome.WIN:
             self.mask[x, y] = 1
-            self.agent.observe(reward=1, terminal=True)
+            self.agent.observe(reward=10.0, terminal=True)
         elif result == Outcome.HIT:
             self.mask[x, y] = 1
-            self.agent.observe(reward=1, terminal=False)
+            self.agent.observe(reward=3.0, terminal=False)
         elif result == Outcome.MISS:
             self.mask[x, y] = -1
+            self.agent.observe(reward=.5, terminal=False)
+        elif result == Outcome.INVALID:
             self.agent.observe(reward=0, terminal=False)
         else:
-            self.agent.observe(reward=-1, terminal=False)
+            self.agent.observe(reward=-10, terminal=True)
         return
+
 
     def remaining(self) -> int:
         return self.ships

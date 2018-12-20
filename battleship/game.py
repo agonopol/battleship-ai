@@ -42,8 +42,19 @@ class Game(object):
         return
 
     def turn(self, clear=False):
+        #Player takes a turn
         self._turn(self.player, self.opponent, "You", clear)
+        if self.over( ):
+            x, y = self.opponent.target()
+            self.opponent.mark(x, y, Outcome.LOST)
+            return
         self._turn(self.opponent, self.player, "Bot", )
+        if self.over( ):
+            x, y = self.player.target()
+            self.player.mark(x, y, Outcome.LOST)
+
+
+
 
     def over(self):
         return not (self.player.remaining() and self.opponent.remaining())
