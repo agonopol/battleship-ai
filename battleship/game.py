@@ -3,8 +3,9 @@ import sys, os
 
 
 class Game(object):
-    def __init__(self, player, opponent, ships=(5, 4, 3, 3, 2)):
+    def __init__(self, player, opponent, logger, ships=(5, 4, 3, 3, 2)):
         super(Game, self).__init__()
+        self.logger = logger
         self.player = player
         self.opponent = opponent
         self.player.setup(ships)
@@ -17,27 +18,32 @@ class Game(object):
         self.opponent.display(hidden=True)
 
     def _turn(self, player, opponent, name, clear=False):
+        (x, y) = (0,0)
         result = Outcome.INVALID
         while result == Outcome.INVALID:
             (x, y) = player.target()
             result = opponent.report(x, y)
             if result == Outcome.INVALID:
-                sys.stdout.write("Location %d,%d is not valid.\n" % (x, y))
+                player.mark(x, y, result)
+                if clear:
+                    self.logger.info("Location %d,%d is not valid." % (x, y))
             else:
                 if clear:
                     os.system("clear")
-                sys.stdout.write("%s shot at %d,%d\n" % (name, x, y))
+                self.logger.info("%s shot at %d,%d" % (name, x, y))
         if result == Outcome.HIT:
-            sys.stdout.write("%s hit!\n" % name)
+            self.logger.info("%s hit!" % name)
         else:
-            sys.stdout.write("%s missed!\n" % name)
+            self.logger.info("%s missed!" % name)
         if not opponent.remaining():
-            sys.stdout.write("%s won!\n" % name)
-            return
+            self.logger.info("%s won!" % name)
+            result = Outcome.WIN
+        player.mark(x, y, result)
+        return
 
-    def turn(self):
-        self._turn(self.player, self.opponent, "You", clear=True)
-        self._turn(self.opponent, self.player, "Bot")
+    def turn(self, clear=False):
+        self._turn(self.player, self.opponent, "You", clear)
+        self._turn(self.opponent, self.player, "Bot", )
 
     def over(self):
         return not (self.player.remaining() and self.opponent.remaining())

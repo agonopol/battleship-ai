@@ -14,6 +14,8 @@ class Dummy(Player):
         self.ships = 0
 
     def setup(self, ships=(5, 4, 3, 3, 2)):
+        self.grid = Grid(self.size)
+        self.mask = np.zeros((self.size, self.size))
         self.ships = sum(ships)
         for n in ships:
             ship = Ship.random(self.size, n)
@@ -36,7 +38,7 @@ class Dummy(Player):
         self.grid.display(hidden=hidden)
 
     def mark(self, x: int, y: int, result: Outcome):
-        pass
+        self.mask[x,y] = result.value
 
     def remaining(self) -> int:
         return self.ships

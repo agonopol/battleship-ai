@@ -7,13 +7,14 @@ class Outcome(IntEnum):
     INVALID = 0
     MISS = 1
     HIT = 2
+    WIN = 3
 
 
 class State(IntEnum):
+    MISS = -1
     EMPTY = 0
-    MISS = 1
     SHIP = 2
-    HIT = 3
+    HIT = 1
 
 
 class Grid(object):

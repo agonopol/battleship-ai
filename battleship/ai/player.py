@@ -39,6 +39,7 @@ class Human(Player):
         self.ships = 0
 
     def setup(self, ships=(5, 4, 3, 3, 2)):
+        self.grid = Grid(self.size)
         self.ships = sum(ships)
         for n in ships:
             ship = Ship.random(self.size, n)
