@@ -1,7 +1,8 @@
 from battleship.game import Game
 from battleship.ai.player import Human
 from battleship.ai.dummy import Dummy
-from battleship.ai.learner import Learner
+
+from battleship.ai.counter import Counter
 import random, os, click
 from tqdm import tqdm
 import matplotlib.pyplot as plt
@@ -15,6 +16,7 @@ def battleship():
 @battleship.command()
 @click.argument('rounds', type=click.INT)
 def train(rounds):
+    from battleship.ai.learner import Learner
     dummy = Dummy( 10 )
     ai = Learner( 10, os.path.join(os.path.dirname(__file__), "models"))
 
@@ -48,13 +50,14 @@ def play():
     logger.addHandler( handler )
 
     random.seed(12345)
-    learner = Learner(10, os.path.join(os.path.dirname(__file__), "models"))
-    game = Game(Human(10), learner, logger)
+    # learner = Learner(10, os.path.join(os.path.dirname(__file__), "models"))
+    counter = Counter(10)
+    game = Game(Human(10), counter, logger)
     game.display()
     while not game.over():
         game.turn(clear=True)
         game.display()
-    learner.save()
+    # learner.save()
 
 
 if __name__ == '__main__':

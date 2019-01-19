@@ -18,7 +18,7 @@ class Game(object):
         self.opponent.display(hidden=True)
 
     def _turn(self, player, opponent, name, clear=False):
-        (x, y) = (0,0)
+        (x, y) = (0, 0)
         result = Outcome.INVALID
         while result == Outcome.INVALID:
             (x, y) = player.target()
@@ -42,19 +42,23 @@ class Game(object):
         return
 
     def turn(self, clear=False):
-        #Player takes a turn
+        # Player takes a turn
         self._turn(self.player, self.opponent, "You", clear)
-        if self.over( ):
+        if self.over():
             x, y = self.opponent.target()
             self.opponent.mark(x, y, Outcome.LOST)
             return
         self._turn(self.opponent, self.player, "Bot", )
-        if self.over( ):
+        if self.over():
             x, y = self.player.target()
             self.player.mark(x, y, Outcome.LOST)
 
-
-
-
     def over(self):
         return not (self.player.remaining() and self.opponent.remaining())
+
+    def winner(self):
+        if not self.player.remaining():
+            return -1
+        if not self.opponent.remaining():
+            return 1
+        return 0

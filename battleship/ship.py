@@ -1,5 +1,5 @@
 import random
-
+import numpy as np
 
 class Ship(object):
     def __init__(self, start, end):
@@ -19,11 +19,35 @@ class Ship(object):
         return len(self.cells)
 
     @staticmethod
-    def random(size, n):
-        start = [random.randint(0, size - 1), random.randint(0, size - 1)]
-        if random.random() > .5:
-            return Ship(start,
-                        [start[0], start[1] + n - 1] if start[1] + n - 1 < size else [start[0], start[1] - n + 1])
+    def random(board_size, n):
+        rows = ((board_size - n) * board_size)
+        possibilites = rows * 2
+        choice = np.random.randint(0, possibilites)
+        if choice <= rows:
+            #last cell
+            if choice == rows:
+                return Ship([board_size - 1, board_size - n], [board_size - 1, board_size - 1])
+            row = int(choice / ( board_size - n ))
+            offset = choice % ( board_size - n )
+            return Ship([row, offset], [row, (offset + n) - 1])
         else:
-            return Ship(start,
-                        [start[0] + n - 1, start[1]] if start[0] + n - 1 < size else [start[0] - n + 1, start[1]])
+            choice = choice - rows
+            if choice == rows:
+                return Ship([board_size - n, board_size - 1], [board_size - 1, board_size - 1])
+            column = int(choice / ( board_size - n ))
+            offset = choice % ( board_size - n )
+            return Ship([offset, column], [(offset + n) - 1, column])
+
+    @staticmethod
+    def around(board_size, x, y, n):
+        for i in range(n):
+            if y - i >= 0 and ((y - i) + ( n - 1))  < board_size:
+                yield Ship([x, y - i], [x, (y - i) + ( n - 1 )])
+            if y + i >= 0 and ((y + i) + ( n - 1))  < board_size:
+                yield Ship([x, y + i], [x, (y + i) + ( n - 1)])
+        for i in range(n):
+            if x - i >= 0 and ((x - i) + ( n - 1))  < board_size:
+                yield Ship([x - i, y], [(x - i) + ( n - 1 ), y])
+            if x + i >= 0 and ((x + i) + ( n - 1))  < board_size:
+                yield Ship([x + i, y], [(x + i) + ( n - 1 ), y])
+
